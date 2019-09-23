@@ -1,0 +1,28 @@
+---
+  keyType: 'rsa'
+  keyLen: 4096
+  duration: 365
+  digest: 'sha256'
+  altnames: True
+  domain: 'kitchen.io'
+
+  subject:
+    - C: 'FR'
+    - ST: 'PACA'
+    - L: 'Gap'
+    - O: 'Kitchen Inc.'
+    - OU: 'Registration Authority'
+
+  keyUsage:
+    - "digitalSignature"
+    - "nonRepudiation"
+    - "keyEncipherment"
+    - "cRLSign"
+
+  extendedKeyUsage:
+    - "serverAuth"
+    - "timeStamping"
+    - "OCSPSigning"
+
+  certType:
+    - "server"
