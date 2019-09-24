@@ -58,12 +58,9 @@ pip3 install -r requirements.txt
 # First run init step
 ./ca_server.py --path ${UPKI_DIR} init
 
-# Then run register step
-./ca_server.py --path ${UPKI_DIR} register --ip ${UPKI_IP} --port ${UPKI_PORT}
-
 echo "[+] Create services"
 # Create ca service
-sudo cat <<EOT > /etc/systemd/system/upki.service
+sudo tee /etc/systemd/system/upki.service > /dev/null <<EOT
 [Unit]
 Description=µPki Certification Authority service
 ConditionACPower=true
@@ -84,6 +81,8 @@ EOT
 # Reload services
 sudo systemctl daemon-reload
 
+# Then run register step
+./ca_server.py --path ${UPKI_DIR} register --ip ${UPKI_IP} --port ${UPKI_PORT}
 
 echo "Do you wish to activate uPKI on boot?"
 select yn in "Yes" "No"; do
