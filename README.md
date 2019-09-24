@@ -23,6 +23,12 @@ The following modules are required
 - PyYAML
 - PyZMQ
 
+Some systems libs & tools are also required, make sure you have them pre-installed
+```bash
+sudo apt update
+sudo apt -y install build-essential libssl-dev libffi-dev python3-dev python3-pip git
+```
+
 ## 2. Install
 The Installation process require two different phases:
 
@@ -34,12 +40,12 @@ cd ./upki
 
 2. Install the dependencies and upki-ca service in order to auto-start service on boot if needed. The install script will also guide you during the setup process of your Registration Authority (RA).
 ```bash
-sudo ./install.sh
+./install.sh
 ```
 
 If you plan to use two different servers for CA & RA (recommended) you can specify on which ip:port your CA should listen.
 ```bash
-sudo ./install.sh -i 127.0.0.1 -p 5000
+./install.sh -i 127.0.0.1 -p 5000
 ```
 
 ## 3. Usage
