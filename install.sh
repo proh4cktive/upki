@@ -51,6 +51,12 @@ while getopts ':hip:' option; do
 done
 shift $((OPTIND - 1))
 
+# Update system & install required apps
+echo "[+] Update system"
+sudo apt -y update && sudo apt -y upgrade
+echo "[+] Install required apps"
+sudo apt -y install build-essential libssl-dev libffi-dev python3-dev python3-pip git
+
 # Install required libs
 echo "[+] Install required libs"
 pip3 install -r requirements.txt
@@ -58,8 +64,8 @@ pip3 install -r requirements.txt
 # First run init step
 ./ca_server.py --path ${UPKI_DIR} init
 
-echo "[+] Create services"
 # Create ca service
+echo "[+] Create services"
 sudo tee /etc/systemd/system/upki.service > /dev/null <<EOT
 [Unit]
 Description=µPki Certification Authority service
@@ -84,7 +90,7 @@ sudo systemctl daemon-reload
 # Then run register step
 ./ca_server.py --path ${UPKI_DIR} register --ip ${UPKI_IP} --port ${UPKI_PORT}
 
-echo "Do you wish to activate uPKI on boot?"
+echo "Do you wish to activate uPKI service on boot?"
 select yn in "Yes" "No"; do
     case $yn in
         Yes )
