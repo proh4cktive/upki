@@ -1,7 +1,0 @@
-pymongo==3.8.0
-setuptools==41.2.0
-cryptography==2.6.1
-validators==0.12.4
-tinydb==3.10.0
-PyYAML==5.1.2
-pyzmq==18.1.0

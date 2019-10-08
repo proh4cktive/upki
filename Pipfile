@@ -6,13 +6,12 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-pymongo = "==3.8.0"
-jsonpickle = "==0.9.3"
-cryptography = "==2.6.1"
-validators = "==0.12.4"
-tinydb = "==3.10.0"
-pyzmq = "==18.1.0"
-PyYAML = "==5.1.2"
+pymongo = "~=3.9.0"
+cryptography = "~=2.7"
+validators = "~=0.14.0"
+tinydb = "~=3.14.1"
+pyzmq = "~=18.1.0"
+PyYAML = "~=5.1.2"
 
 [requires]
 python_version = "3.6"
