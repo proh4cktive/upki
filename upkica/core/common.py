@@ -236,7 +236,7 @@ class Common(object):
         # Ensure cn is valid
         if (cn is None) or not len(cn):
             raise Exception('Empty CN option')
-        if not (re.match('^[\w\-_\.@]+$', cn) is not None):
+        if not (re.match('^[\w\-_\.\s@]+$', cn) is not None):
             raise Exception('Invalid CN')
 
         return cn
