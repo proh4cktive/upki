@@ -95,8 +95,9 @@ class PublicCert(upkica.core.Common):
         # We never trust CSR extensions
         # they may have been alterated by the user
         try:
+            # Due to uPKI design (TLS for renew), digital_signature MUST be setup
+            digital_signature  = True
             # Initialize key usage
-            digital_signature  = False
             content_commitment = False
             key_encipherment   = False
             data_encipherment  = False
@@ -165,9 +166,16 @@ class PublicCert(upkica.core.Common):
             
             #### CHECK TROUBLES ASSOCIATED WITH THIS CHOICE #####
             # Always add 'clientAuth' for automatic renewal
-            key_usages_extended.append(ExtendedKeyUsageOID.CLIENT_AUTH)
+            if ExtendedKeyUsageOID.CLIENT_AUTH not in key_usages_extended:
+                key_usages_extended.append(ExtendedKeyUsageOID.CLIENT_AUTH)
             #####################################################
-            
+
+            # Add Deprecated nsCertType (still required by some software)
+            # nsCertType_oid = x509.ObjectIdentifier('2.16.840.1.113730.1.1')
+            # for c_type in profile['certType']:
+            #     if c_type.lower() in ['client', 'server', 'email', 'objsign']:
+            #         builder.add_extension(nsCertType_oid, c_type.lower())
+
             # Set Key Usages if needed
             if len(key_usages_extended):
                 builder = builder.add_extension(x509.ExtendedKeyUsage(key_usages_extended), critical=False)

@@ -101,6 +101,12 @@ class CertRequest(upkica.core.Common):
             except Exception as err:
                 raise Exception('Unable to add alternate name: {e}'.format(e=err))
 
+        # Add Deprecated nsCertType (still required by some software)
+        # nsCertType_oid = x509.ObjectIdentifier('2.16.840.1.113730.1.1')
+        # for c_type in profile['certType']:
+        #     if c_type.lower() in ['client', 'server', 'email', 'objsign']:
+        #         builder.add_extension(nsCertType_oid, c_type.lower())
+
         if profile['digest'] == 'md5':
             digest = hashes.MD5()
         elif profile['digest'] == 'sha1':
