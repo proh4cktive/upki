@@ -102,7 +102,7 @@ class Listener(upkica.core.Common):
                 x509.CertificateRevocationListBuilder()
                 .issuer_name(self._ca['cert'].issuer)
                 .last_update(now)
-                .next_update(now + datetime.timedelta(days=1))
+                .next_update(now + datetime.timedelta(days=3))
             )
         except Exception as err:
             raise Exception('Unable to build CRL: {e}'.format(e=err))

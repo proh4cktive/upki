@@ -220,7 +220,7 @@ class PublicCert(upkica.core.Common):
         try:
             # Register signing authority
             issuer_key_id = x509.SubjectKeyIdentifier.from_public_key(issuer_key.public_key())
-            builder = builder.add_extension(x509.AuthorityKeyIdentifier(issuer_key_id.digest, [x509.DNSName(issuer_name.rfc4514_string())], issuer_serial), critical=False)
+            builder = builder.add_extension(x509.AuthorityKeyIdentifier(issuer_key_id.digest, [x509.DirectoryName(issuer_name.rfc4514_string())], issuer_serial), critical=False)
         except Exception as err:
             raise Exception(err)
 
