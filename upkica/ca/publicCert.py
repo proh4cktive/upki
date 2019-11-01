@@ -90,7 +90,7 @@ class PublicCert(upkica.core.Common):
                 .add_extension(basic_contraints, critical=True)
             )
         except Exception as err:
-            raise Exception(err)
+            raise Exception('Unable to build structure: {e}'.format(e=err))
 
         # We never trust CSR extensions
         # they may have been alterated by the user
@@ -222,7 +222,7 @@ class PublicCert(upkica.core.Common):
             issuer_key_id = x509.SubjectKeyIdentifier.from_public_key(issuer_key.public_key())
             builder = builder.add_extension(x509.AuthorityKeyIdentifier(issuer_key_id.digest, [x509.DirectoryName(issuer_name.rfc4514_string())], issuer_serial), critical=False)
         except Exception as err:
-            raise Exception(err)
+            raise Exception('Unable to setup Authority Identifier: {e}'.format(e=err))
 
         ca_endpoints = list()
         try:
@@ -244,7 +244,7 @@ class PublicCert(upkica.core.Common):
                 ca_endpoints.append(x509.AccessDescription(x509.oid.AuthorityInformationAccessOID.OCSP,x509.UniformResourceIdentifier(ocsp_url)))
             builder = builder.add_extension(x509.AuthorityInformationAccess(ca_endpoints), critical=False)
         except Exception as err:
-            raise Exception(err)
+            raise Exception('Unable to setup OCSP/CA endpoint: {e}'.format(e=err))
 
         try:
             # Add CRL distribution point
@@ -259,7 +259,7 @@ class PublicCert(upkica.core.Common):
             crl_endpoints.append(x509.DistributionPoint([x509.UniformResourceIdentifier(url)], None, None, [x509.DNSName(issuer_name.rfc4514_string())]))
             builder = builder.add_extension(x509.CRLDistributionPoints(crl_endpoints), critical=False)
         except Exception as err:
-            raise Exception(err)
+            raise Exception('Unable to setup CRL endpoints: {e}'.format(e=err))
 
         if digest is None:
             digest = profile['digest']

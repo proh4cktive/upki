@@ -54,12 +54,12 @@ class CertRequest(upkica.core.Common):
             # Append cn at the end
             subject.append(x509.NameAttribute(NameOID.COMMON_NAME, cn))
         except Exception as err:
-            raise Exception(err)
+            raise Exception('Unable to setup subject name: {e}'.format(e=err))
 
         try:
             builder = x509.CertificateSigningRequestBuilder().subject_name(x509.Name(subject))
         except Exception as err:
-            raise Exception(err)
+            raise Exception('Unable to create structure: {e}'.format(e=err))
 
         subject_alt = list([])
         # Best pratices wants to include FQDN in SANS for servers
