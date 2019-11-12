@@ -1,7 +1,11 @@
-pymongo==3.8.0
-setuptools==41.2.0
-cryptography==2.6.1
-validators==0.12.4
-tinydb==3.10.0
+asn1crypto==1.0.1
+cffi==1.13.2
+cryptography==2.8
+decorator==4.4.1
+pycparser==2.19
+pymongo==3.9.0
 PyYAML==5.1.2
 pyzmq==18.1.0
+six==1.13.0
+tinydb==3.14.2
+validators==0.14.0
