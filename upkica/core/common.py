@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 
 import os
+import errno
 import re
 import sys
 import yaml
@@ -206,7 +207,7 @@ class Common(object):
             self.output('Create {d} directory...'.format(d=path), level="DEBUG")
             os.makedirs(path)
         except OSError as err:
-            if err.errno == os.errno.EEXIST and os.path.isdir(path):
+            if err.errno == errno.EEXIST and os.path.isdir(path):
                 pass
             else:
                 raise Exception(err)
