@@ -18,12 +18,6 @@ def main(argv):
     LISTEN_PORT = 5000
     CA_PATH     = None
 
-    LOG_PATH    = os.path.join(BASE_DIR, 'logs/', LOG_FILE)
-
-    # Retrieve all metadata from project
-    with open("__metadata.py", 'rt') as meta_file:
-        metadata = dict(re.findall(r"^__([a-z]+)__ = ['\"]([^'\"]*)['\"]", meta_file.read(), re.M))
-    
     parser = argparse.ArgumentParser(description="µPki [maɪkroʊ ˈpiː-ˈkeɪ-ˈaɪ] is a small PKI in python that should let you make basic tasks without effort.")
     parser.add_argument("-q", "--quiet", help="Output less infos", action="store_true")
     parser.add_argument("-d", "--debug", help="Output debug mode", action="store_true")
@@ -69,11 +63,20 @@ def main(argv):
     if args.log:
         LOG_PATH = args.log
 
+    LOG_PATH    = os.path.join(BASE_DIR, 'logs/', LOG_FILE)
+
     # Generate logger object
     try:
         logger = upkica.core.PHKLogger(LOG_PATH, level=LOG_LEVEL, proc_name="upki_ca", verbose=VERBOSE)
     except Exception as err:
         raise Exception('Unable to setup logger: {e}'.format(e=err))
+
+    # Meta information
+    dirname = os.path.dirname(__file__)
+
+    # Retrieve all metadata from project
+    with open(os.path.join(dirname, '__metadata.py'), 'rt') as meta_file:
+        metadata = dict(re.findall(r"^__([a-z]+)__ = ['\"]([^'\"]*)['\"]", meta_file.read(), re.M))
 
     logger.info("\t\t..:: µPKI - Micro PKI ::..", color="WHITE", light=True)
     logger.info("version: {v}".format(v=metadata['version']), color="WHITE")
