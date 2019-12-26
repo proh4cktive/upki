@@ -4,13 +4,16 @@
 import re
 from setuptools import setup, find_packages
 
+# Meta information
+dirname = os.path.dirname(__file__)
+
 # Retrieve all metadata from project
-with open("__metadata.py") as meta_file:
-    metadata = dict(re.findall("__([a-z]+)__\s*=\s*'([^']+)'", meta_file.read()))
+with open(os.path.join(dirname, '__metadata.py'), 'rt') as meta_file:
+    metadata = dict(re.findall(r"^__([a-z]+)__ = ['\"]([^'\"]*)['\"]", meta_file.read(), re.M))
 
 # Get required packages from requirements.txt
 # Make it compatible with setuptools and pip
-with open('requirements.txt') as f:
+with open(os.path.join(dirname, 'requirements.txt')) as f:
     requirements = f.read().splitlines()
 
 setup(
