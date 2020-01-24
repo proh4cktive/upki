@@ -12,6 +12,7 @@ import upkica
 def main(argv):
     BASE_DIR    = os.path.join(os.path.expanduser("~"), '.upki/')
     LOG_FILE    = "ca.log"
+    LOG_PATH    = os.path.join(BASE_DIR, LOG_FILE)
     LOG_LEVEL   = logging.INFO
     VERBOSE     = True
     LISTEN_HOST = '127.0.0.1'
