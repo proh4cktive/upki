@@ -2,8 +2,14 @@
 
 # µPKI
 ***NOT READY FOR PRODUCTION USE***
-This project has only been tested on Debian 9 Strech with Python3.6.
+This project has only been tested on few distributions with Python3.6.
 Due to python usage it *SHOULD* works on many other configurations, but it has NOT been tested.
+Known working OS:
+> - Debian 9 Strech (CA/RA/CLI)
+> - Debian 10 Buster (CA/RA/CLI)
+> - Ubuntu 18.04 (CA/RA/CLI)
+> - MacOS Catalina 10.15 (CLI - without update services)
+> - MacOS Mojave 10.14 (CLI - without update services)
 
 ## 1. About
 µPki [maɪkroʊ ˈpiː-ˈkeɪ-ˈaɪ] is a small PKI in python that should let you make basic tasks without effort.
