@@ -14,9 +14,9 @@ import upkica
 from .listener import Listener
 
 class ZMQRegister(Listener):
-    def __init__(self, config, storage, profiles):
+    def __init__(self, config, storage, profiles, admins):
         try:
-            super(ZMQRegister, self).__init__(config, storage, profiles)
+            super(ZMQRegister, self).__init__(config, storage, profiles, admins)
         except Exception as err:
             raise Exception(err)
 

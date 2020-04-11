@@ -12,7 +12,7 @@ from cryptography.hazmat.primitives import hashes
 import upkica
 
 class Listener(upkica.core.Common):
-    def __init__(self, config, storage, profiles):
+    def __init__(self, config, storage, profiles, admins):
         try:
             super(Listener, self).__init__(config._logger)
         except Exception as err:
@@ -21,6 +21,7 @@ class Listener(upkica.core.Common):
         self._config   = config
         self._storage  = storage
         self._profiles = profiles
+        self._admins   = admins
         self._socket   = None
         self._run      = False
 
@@ -59,11 +60,9 @@ class Listener(upkica.core.Common):
     def __load_keychain(self):
         self._ca = dict({})
         self.output('Loading CA keychain', level="DEBUG")
-        with open(os.path.join(self._config._dpath, "certs", 'ca.crt'), 'rb') as data:
-            self._ca['public'] = data.read()
-        with open(os.path.join(self._config._dpath, "private", 'ca.key'), 'rb') as data:
-            self._ca['private'] = data.read()
-
+        self._ca['public'] = self._storage.get_ca().encode('utf-8')
+        self._ca['private'] = self._storage.get_ca_key().encode('utf-8')
+        
         try:
             self._ca['cert'] = x509.load_pem_x509_certificate(self._ca['public'], backend=self._backend)
             self._ca['dn'] = self._get_dn(self._ca['cert'].subject)

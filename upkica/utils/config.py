@@ -1,8 +1,6 @@
 # -*- coding:utf-8 -*-
 
 import os
-import re
-import yaml
 
 import upkica
 
@@ -107,7 +105,7 @@ class Config(upkica.core.Common):
                 except KeyError:
                     pass
             try:
-                self._storeYAML(os.path.join(self._dpath, 'profiles', '{n}.yml'.format(n=name)), data)
+                self.storage.store_profile(name, data)
             except Exception as err:
                 raise Exception('Unable to store {n} profile: {e}'.format(n=name, e=err))
         

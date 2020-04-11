@@ -87,7 +87,9 @@ class FileStorage(AbstractStorage):
         return True
 
     def list_admins(self):
-        return self.db['admins'].all()
+        admins = self.db['admins'].all()
+
+        return admins
 
     def add_admin(self, dn):
         if not self.exists(dn):
@@ -108,7 +110,7 @@ class FileStorage(AbstractStorage):
 
         return True
 
-    def remove_admin(self, dn):
+    def delete_admin(self, dn):
         if not self.exists(dn):
             raise Exception('This node does not exists')
 
@@ -494,6 +496,14 @@ class FileStorage(AbstractStorage):
 
         return data
 
+    def get_ca_key(self):
+        """Return CA certificate content (PEM encoded)
+        """
+        with open(os.path.join(self._keys_db, 'ca.key'), 'rt') as cafile:
+            data = cafile.read()
+
+        return data
+
     def get_crl(self):
         """Return CRL content (PEM encoded)
         """
@@ -650,8 +660,6 @@ class FileStorage(AbstractStorage):
     def list_nodes(self):
         """Return list of all nodes, auto update expired ones
         """
-        Node = tinydb.Query()
-
         nodes = self.db['nodes'].all()
 
         # Use loop to clean datas

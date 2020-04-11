@@ -14,9 +14,9 @@ import upkica
 from .listener import Listener
 
 class ZMQListener(Listener):
-    def __init__(self, config, storage, profiles):
+    def __init__(self, config, storage, profiles, admins):
         try:
-            super(ZMQListener, self).__init__(config, storage, profiles)
+            super(ZMQListener, self).__init__(config, storage, profiles, admins)
         except Exception as err:
             raise Exception(err)
 
@@ -24,8 +24,33 @@ class ZMQListener(Listener):
         self._public  = upkica.ca.PublicCert(config)
         self._request = upkica.ca.CertRequest(config)
         self._private = upkica.ca.PrivateKey(config)
+
+    def _upki_list_admins(self, params):
+        return self._admins.list()
         
-    def _upki_list_profiles(self, params):
+    def _upki_add_admin(self, dn):
+        if dn is None:
+            raise Exception('Missing admin DN')
+        try:
+            self.output('Add admin {d}'.format(d=dn))
+            self._admins.store(dn)
+        except Exception as err:
+            raise Exception(err)
+
+        return True
+        
+    def _upki_remove_admin(self, dn):
+        if dn is None:
+            raise Exception('Missing admin DN')
+        try:
+            self.output('Delete admin {d}'.format(d=dn))
+            self._admins.delete(dn)
+        except Exception as err:
+            raise Exception(err)
+
+        return True
+        
+    def _upki_list_profiles(self, dn):
         return self._profiles.list()
 
     def _upki_profile(self, profile_name):

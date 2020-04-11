@@ -10,7 +10,7 @@ import logging
 import upkica
 
 def main(argv):
-    BASE_DIR    = os.path.join(os.path.expanduser("~"), '.upki/')
+    BASE_DIR    = os.path.join(os.path.expanduser("~"), '.upki', 'ca/')
     LOG_FILE    = "ca.log"
     LOG_PATH    = os.path.join(BASE_DIR, LOG_FILE)
     LOG_LEVEL   = logging.INFO

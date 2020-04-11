@@ -22,6 +22,7 @@ class Authority(upkica.core.Common):
         # Initialize handles
         self._config   = config
         self._profiles = None
+        self._admins   = None
         self._private  = None
         self._request  = None
         self._public   = None
@@ -293,15 +294,16 @@ class Authority(upkica.core.Common):
         except Exception as err:
             raise upkica.core.UPKIError(34, 'Unable to load configuration: {e}'.format(e=err))
 
-        # Setup connectors
-        self._storage  = self._config.storage
-        self._profiles = upkica.utils.Profiles(self._logger, self._storage)
-
         try:
             self.output('Connecting storage...', level="DEBUG")
+            self._storage = self._config.storage
             self._storage.connect()
         except Exception as err:
             raise upkica.core.UPKIError(35, 'Unable to connect to db: {e}'.format(e=err))
+
+        # Setup connectors
+        self._profiles = upkica.utils.Profiles(self._logger, self._storage)
+        self._admins   = upkica.utils.Admins(self._logger, self._storage)
 
         return True
 
@@ -327,7 +329,7 @@ class Authority(upkica.core.Common):
 
         try:
             # Setup listeners
-            register = upkica.connectors.ZMQRegister(self._config, self._storage, self._profiles)
+            register = upkica.connectors.ZMQRegister(self._config, self._storage, self._profiles, self._admins)
         except Exception as err:
             raise upkica.core.UPKIError(39, 'Unable to initialize register: {e}'.format(e=err))
 
@@ -369,7 +371,7 @@ class Authority(upkica.core.Common):
 
         try:
             # Setup listeners
-            listener = upkica.connectors.ZMQListener(self._config, self._storage, self._profiles)
+            listener = upkica.connectors.ZMQListener(self._config, self._storage, self._profiles, self._admins)
         except Exception as err:
             raise upkica.core.UPKIError(42, 'Unable to initialize listener: {e}'.format(e=err))
         
