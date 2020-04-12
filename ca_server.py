@@ -105,7 +105,7 @@ def main(argv):
         
         # Build compliant register command
         cmd = "$ {p}".format(p=sys.argv[0])
-        if BASE_DIR != os.path.join(os.path.expanduser("~"), '.upki/'):
+        if BASE_DIR != os.path.join(os.path.expanduser("~"), '.upki', 'ca/'):
             cmd += " --path {d}".format(d=BASE_DIR)
         cmd += " register"
         if LISTEN_HOST != '127.0.0.1':
