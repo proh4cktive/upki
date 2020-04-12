@@ -166,7 +166,7 @@ class PublicCert(upkica.core.Common):
             
             #### CHECK TROUBLES ASSOCIATED WITH THIS CHOICE #####
             # Always add 'clientAuth' for automatic renewal
-            if ExtendedKeyUsageOID.CLIENT_AUTH not in key_usages_extended:
+            if not ca and (ExtendedKeyUsageOID.CLIENT_AUTH not in key_usages_extended):
                 key_usages_extended.append(ExtendedKeyUsageOID.CLIENT_AUTH)
             #####################################################
 
@@ -220,7 +220,7 @@ class PublicCert(upkica.core.Common):
         try:
             # Register signing authority
             issuer_key_id = x509.SubjectKeyIdentifier.from_public_key(issuer_key.public_key())
-            builder = builder.add_extension(x509.AuthorityKeyIdentifier(issuer_key_id.digest, [x509.DirectoryName(issuer_name)], issuer_serial), critical=False)
+            builder = builder.add_extension(x509.AuthorityKeyIdentifier(issuer_key_id.digest, [x509.DNSName(issuer_name.rfc4514_string())], issuer_serial), critical=False)
         except Exception as err:
             raise Exception('Unable to setup Authority Identifier: {e}'.format(e=err))
 
@@ -260,6 +260,13 @@ class PublicCert(upkica.core.Common):
             builder = builder.add_extension(x509.CRLDistributionPoints(crl_endpoints), critical=False)
         except Exception as err:
             raise Exception('Unable to setup CRL endpoints: {e}'.format(e=err))
+
+        try:
+            # Only CA know its private key
+            if ca:
+                builder = builder.add_extension(x509.SubjectKeyIdentifier(issuer_key_id.digest), critical=False)
+        except Exception as err:
+            raise Exception('Unable to add Subject Key Identifier extension: {e}'.format(e=err))
 
         if digest is None:
             digest = profile['digest']
