@@ -7,7 +7,7 @@ verify_ssl = true
 
 [packages]
 pymongo = "~=3.9.0"
-cryptography = "~=2.7"
+cryptography = "~=3.2"
 validators = "~=0.14.0"
 tinydb = "~=3.14.1"
 pyzmq = "~=18.1.0"
